@@ -19,6 +19,8 @@ module.exports = function () {
             return await page.stromProdukte.submitCalculator();
         }else if(btn=="Weiter zur Zusammenfassung"){
             return await page.stromProdukte.submitForm();
+        }else{
+            console.log("TODO ERROR");
         }
     });
 

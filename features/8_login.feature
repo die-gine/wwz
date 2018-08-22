@@ -8,15 +8,13 @@ Background:
     Given ist die WWZ Startseite
 
     Scenario Outline: Such nach PLZ ausserhalb Versorgungsbereich
-    When ich "Meine WWZ" klicke
-    And ich meine Nutzerdaten eingebe - <name>, <pwd>
-    And ich "Einloggen" klicke
+    When ich mich anmelde - <name>, <pwd>
     Then sehe ich "Meine Übersicht"
-    And erreiche ich meinen Nutzeraccount - <name>
-    When ich "Meine WWZ" klicke
-    And ich "Abmelden" klicke
+    And befinde ich mich in meinem Nutzeraccount - <kundennummer>
+    When ich mich abmelde
     Then sehe ich "Abmelden"
+    And der Text "Sie haben sich erfolgreich abgemeldet" wird angezeigt
 
     Examples:
-            |name|pwd|
-            |benjamin.stettler@wwz.ch|4000|
+            |name|pwd|kundennummer|
+            |"benjamin.stettler@wwz.ch"|"Check2data$"|"1234567"|

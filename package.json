@@ -1,5 +1,5 @@
 {
-  "name": "selenium-cucumber-js",
+  "name": "wwz-selenium-cucumber",
   "version": "1.5.13",
   "description": "JavaScript browser automation framework using official selenium-webdriver and cucumber-js",
   "main": "index.js",
