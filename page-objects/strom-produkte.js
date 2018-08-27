@@ -24,7 +24,12 @@ module.exports = {
         productSummary: by.css("div.products-overview span.tariff-product-text-1"),
         nameSummary: by.css("div.products-overview-details > span.ng-binding:nth-child(2)"),
         plzCitySummary: by.css("div.products-overview-details > span.ng-binding:nth-child(6)"),
-
+        h2_tarifPrice: by.css("div > h2.wwz-clamp.wwz-nested-no-subheadline"),
+        price2018:by.css("ul li.wwz-element.wwz-elements:nth-child(2) > h2.collapsible-header"),
+        graustrom: by.xpath("//ul[1]/li[2]/ul[1]/li[2]/ul[1]/li[1]/a[1]/div[1]"),
+        priceList2018: by.xpath("//ul[1]/li[2]/ul[1]/li[2]/h2[1]"),
+        priceList2017: by.xpath("//li[3]/h2[1]"),
+        background: by.xpath("//li[4]/h2[1]"),
     },
 
     getConsumption: async function () {
@@ -96,6 +101,17 @@ module.exports = {
         await driver.findElement(page.stromProdukte.elements.emailInsert).sendKeys(mail);
         return await driver.findElement(page.stromProdukte.elements.telInsert).sendKeys(tel);
     },
+    selectProductPriceList: async function(prod){
+        await driver.findElement(page.stromProdukte.elements.h2_tarifPrice).click();
+        var priceList;
+        if(prod=="Preise 2018"){
+           return await driver.findElement(page.stromProdukte.elements.priceList2018).click();
+        }else if (prod == "Preise 2017"){
+           return await driver.findElement(page.stromProdukte.elements.priceList2017).click();
+        }else if (prod == "Herkunft"){
+           return await driver.findElement(page.stromProdukte.elements.background).click();
+        }
+    },
 
 
 
@@ -119,12 +135,16 @@ module.exports = {
     },
     checkIfProductPriceIncresed: async function(){
         var basisPrice= shared.testData.sonnenstromBasisPrice;
+        var selector = page.stromProdukte.elements.priceFirstProduct;
+        await driver.wait(until.elementLocated(selector), 10000);
         var newPrice = await driver.findElement(page.stromProdukte.elements.priceFirstProduct).getText();
         expect(basisPrice).to.be.below(newPrice);
     },
 
     checkIfProductPriceDecresed: async function(){
         var basisPrice= await shared.testData.sonnenstromBasisPrice;
+        var selector = page.stromProdukte.elements.priceFirstProduct;
+        await driver.wait(until.elementLocated(selector), 10000);
         var newPrice = await driver.findElement(page.stromProdukte.elements.priceFirstProduct).getText();
         expect(basisPrice).to.be.above(newPrice);
     },
@@ -135,6 +155,23 @@ module.exports = {
         expect(product).to.equal(prod);
         expect(salutation + " "+lastname).to.equal(name);
         expect(plz+" "+city).to.equal(ci);
+    },
+    checkPriceList2018HrefToPDF: async function(prod){
+        var priceList;
+        if(prod=="Preise 2018"){
+            priceList = await driver.findElement(page.stromProdukte.elements.priceList2018);
+        }else if (prod == "Preise 2017"){
+            priceList = await driver.findElement(page.stromProdukte.elements.priceList2017);
+        }else if (prod == "Herkunft"){
+            priceList = await driver.findElement(page.stromProdukte.elements.background);
+        }
+
+        var listElements = await priceList.findElements(by.css("li a"));
+        for (var i = 0; i < listElements.length; i++) {
+            var href = await listElements[i].getAttribute("href");
+            await expect(href.toString()).to.contain(".pdf");
+        }
+        return true;
     }
 
 };

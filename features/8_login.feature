@@ -7,12 +7,12 @@ Als Bestandskunde möchte ich mich anmelden um zur Übersicht meines Accounts zu
 Background:
     Given ist die WWZ Startseite
 
-    Scenario Outline: Such nach PLZ ausserhalb Versorgungsbereich
+    Scenario Outline: Login/Logout als Bestandskunde
     When ich mich anmelde - <name>, <pwd>
-    Then sehe ich "Meine Übersicht"
+    Then sehe ich den Titel "Meine Übersicht"
     And befinde ich mich in meinem Nutzeraccount - <kundennummer>
     When ich mich abmelde
-    Then sehe ich "Abmelden"
+    Then sehe ich den Titel "Abmelden"
     And der Text "Sie haben sich erfolgreich abgemeldet" wird angezeigt
 
     Examples:

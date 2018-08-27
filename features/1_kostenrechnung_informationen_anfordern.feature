@@ -10,7 +10,7 @@ Background:
     When ich auf Produkte Strom klicke
 
 
-    Scenario: Such nach PLZ ausserhalb Versorgungsbereich
+    Scenario: Such nach PLZ ausserhalb Versorgungsgebiet
         When ich die Verfügbarkeit für meine Postleitzahl "6400" prüfe
         Then erscheint die Fehlermeldung "Standort ausserhalb unseres Versorgungsgebietes."
 
